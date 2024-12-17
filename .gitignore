@@ -18,3 +18,4 @@ ENV/
 
 # Project specific
 lead_results.json
+results_*.json

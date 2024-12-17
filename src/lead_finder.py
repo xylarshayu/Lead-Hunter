@@ -4,12 +4,14 @@ from utils.search import SearchClient
 from utils.analysis import WebsiteAnalyzer
 
 # Load environment variables
-load_dotenv()
+load_dotenv(dotenv_path='.env', override=True)
 
 def main():
     # Initialize components
+
     search_client = SearchClient(
-        api_key=os.getenv('SEARCH_API_KEY')
+        api_key=os.getenv('SEARCH_API_KEY'),
+        cx=os.getenv('SEARCH_ENGINE_ID')
     )
     
     analyzer = WebsiteAnalyzer(
