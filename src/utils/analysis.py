@@ -38,6 +38,7 @@ class WebsiteAnalyzer:
             api_url = (
                 "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
                 f"?url={url}&key={self.pagespeed_api_key}"
+                "&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO"
             )
             response = requests.get(api_url)
             response.raise_for_status()
