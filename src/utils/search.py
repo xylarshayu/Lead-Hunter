@@ -3,12 +3,13 @@ Search module for finding potential client websites using various search engines
 """
 
 import requests
-from typing import List, Optional
+from typing import List
 import time
-from urllib.parse import quote_plus
+from urllib.parse import urlparse
+import re
 
 class SearchClient:
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, cx: str):
         """
         Initialize the search client.
         
@@ -16,7 +17,7 @@ class SearchClient:
             api_key (str): Google Custom Search API key
         """
         self.api_key = api_key
-        self.cx = "YOUR_CUSTOM_SEARCH_ENGINE_ID"  # Need to create this in Google Custom Search Console
+        self.cx = cx  # custom search engine id
         self.base_url = "https://www.googleapis.com/customsearch/v1"
         self.queries = [
             '"{city}" "small business" -jobs',
@@ -75,20 +76,39 @@ class SearchClient:
         unique_urls = list(dict.fromkeys(urls))
         
         # Filter out unwanted domains
-        blocked_domains = {'facebook.com', 'twitter.com', 'instagram.com', 'linkedin.com'}
-        filtered_urls = [
-            url for url in unique_urls
-            if not any(domain in url.lower() for domain in blocked_domains)
-        ]
-        
+        blocked_domains = {'facebook.com', 'twitter.com', 'instagram.com', 'linkedin.com', 'reddit.com', 'github.com', 'justdial.com'}
+        blocked_extensions = {'.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx'}
+
+        filtered_urls = []
+        for url in unique_urls:
+            try:
+                parsed = urlparse(url.lower())
+                
+                # Skip if domain is blocked
+                if any(domain in parsed.netloc for domain in blocked_domains):
+                    continue
+                    
+                # Skip if file extension is blocked
+                if any(url.lower().endswith(ext) for ext in blocked_extensions):
+                    continue
+                if 'justdial.com' in parsed.netloc:
+                    if re.search(r'/[^/]+-[A-Z0-9]+_BZDET/?$', parsed.path):
+                        filtered_urls.append(url)
+                    continue
+                
+                filtered_urls.append(url)
+                
+            except Exception:
+                continue
+                
         return filtered_urls
 
-    def search(self, city: str, industry: str, max_results: int = 50) -> List[str]:
+    def search(self, city: str = 'Jaipur', industry: str = None, max_results: int = 50) -> List[str]:
         """
         Perform searches for a given city and industry.
         
         Args:
-            city (str): Target city name
+            city (str): Target city name, defaults to Jaipur
             industry (str): Target industry
             max_results (int): Maximum number of results to return
         
