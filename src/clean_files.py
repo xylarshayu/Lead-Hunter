@@ -21,6 +21,7 @@ def should_keep_url(url):
             'justdial.com',
             'linkedin.com/jobs',
             '/careers',
+            'quora.com',
             '/job'
         ]
         

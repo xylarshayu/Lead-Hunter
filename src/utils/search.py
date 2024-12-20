@@ -76,8 +76,8 @@ class SearchClient:
         unique_urls = list(dict.fromkeys(urls))
         
         # Filter out unwanted domains
-        blocked_domains = {'facebook.com', 'twitter.com', 'instagram.com', 'linkedin.com', 'reddit.com', 'github.com', 'justdial.com'}
-        blocked_extensions = {'.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx'}
+        blocked_domains = {'facebook.com', 'twitter.com', 'instagram.com', 'linkedin.com', 'reddit.com', 'github.com', 'justdial.com', 'quora.com'}
+        blocked_extensions = {'.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.csv'}
 
         filtered_urls = []
         for url in unique_urls:

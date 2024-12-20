@@ -23,8 +23,18 @@ pip install -r requirements.txt
 
 ## Usage
 
+### For data generation
 ```bash
-python src/lead_finder.py
+python src/lead_finder.py --city "Jaipur"
+```
+
+### For viewing data
+You can view the data in a Next.js app. It will ask you to upload the JSON
+
+```bash
+cd view
+pnpm i
+pnpm run dev
 ```
 
 ## Features
